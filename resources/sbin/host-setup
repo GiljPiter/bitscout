@@ -302,16 +302,19 @@ dhcp-option=6,$CONTAINERNET_GUEST_DNS" > /etc/dnsmasq-$CONTAINERNET_NAME.conf
                 *) mount -o ro /dev/loop$[8+$i] /mnt/$NAME;;
               esac
               bindfs --map=$IDMAP -o nosuid,noexec,nodev "/mnt/$NAME" "/mnt/container/$NAME";
-            fi
-            if mount | grep -q '^/dev/loop$[8+$i]'; then
-              echo "OK"
-              ((i++))
+              if mount | grep -q "^/dev/loop$[8+$i]"; then
+                echo "OK"
+                ((i++))
+              else
+                echo "Failed"
+                echo "Reverting the device mapping..."
+                losetup -d /dev/loop$[8+$i]
+              fi
             else
-              echo "Failed"
-              echo "Reverting the device mapping..."
+              echo "No automountable fs here, reverting the device mapping..."
               losetup -d /dev/loop$[8+$i]
             fi
-  
+ 
             if [ $i -ge 10 ]; then 
               echo "Reached max evidence device count. Cannot automount anymore.."
               break

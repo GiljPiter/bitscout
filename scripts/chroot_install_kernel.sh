@@ -2,7 +2,7 @@
 #Bitscout project
 #Copyright Kaspersky Lab
 
-#FORCED_KERNEL_VERSION=4.15.0-66-generic
+#FORCED_KERNEL_VERSION=5.15.0-75-generic
 #FORCED_KERNEL_SOURCE_VERSION=4.15.0.66.68
 
 . ./scripts/functions

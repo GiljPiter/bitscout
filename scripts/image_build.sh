@@ -52,7 +52,7 @@ if [ "$GLOBAL_TARGET" = "iso" ]; then
   install_required_package mtools
   install_required_package xorriso
 
-  sudo grub-mkrescue --modules="part_gpt iso9660 linux ext2 fshelp ls boot jpeg video_bochs video_cirrus" --output=./$PROJECTNAME-$PROJECTRELEASE-$GLOBAL_BASEARCH.iso ./build.$GLOBAL_BASEARCH/image -- -as mkisofs -r -volid "${PROJECTNAME}-${GLOBAL_BUILDID}" -J -l -joliet-long -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -no-emul-boot
+  sudo grub-mkrescue --modules="part_gpt iso9660 linux ext2 fshelp ls boot jpeg video_bochs video_cirrus minicmd extcmd cat" --output=./$PROJECTNAME-$PROJECTRELEASE-$GLOBAL_BASEARCH.iso ./build.$GLOBAL_BASEARCH/image -- -as mkisofs -r -volid "${PROJECTNAME}-${GLOBAL_BUILDID}" -J -l -joliet-long -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -no-emul-boot
 
 elif [ "$GLOBAL_TARGET" != "iso" ]; then
   statusprint "Preparing to build a raw disk image.."
@@ -190,12 +190,12 @@ elif [ "$GLOBAL_TARGET" != "iso" ]; then
 
   if [ "$GLOBAL_PARTITION_TABLE" = "msdos" -o "$GLOBAL_PARTITION_TABLE" = "hybrid" ]; then
     statusprint "Installing MBR grub.."
-    chroot_exec build.$GLOBAL_BASEARCH/image "grub-install --target i386-pc --boot-directory=/boot --modules=\"part_msdos ext2 vbe\" --install-modules=\"ahci all_video ata biosdisk cat disk drivemap ehci gfxmenu gfxterm halt hdparm help linux nativedisk ohci pata jpeg probe reboot scsi uhci usb_keyboard usb vbe videoinfo videotest part_msdos part_gpt fat ext2 normal\" $LOOPDEV_IMG"
+    chroot_exec build.$GLOBAL_BASEARCH/image "grub-install --target i386-pc --boot-directory=/boot --modules=\"part_msdos ext2 vbe\" --install-modules=\"ahci all_video ata biosdisk minicmd extcmd ls cat disk drivemap ehci gfxmenu gfxterm halt hdparm help linux nativedisk ohci pata jpeg probe reboot scsi uhci usb_keyboard usb vbe videoinfo videotest part_msdos part_gpt fat ext2 normal\" $LOOPDEV_IMG"
   fi;
 
   if [ "$GLOBAL_PARTITION_TABLE" = "gpt" -o "$GLOBAL_PARTITION_TABLE" = "hybrid" ]; then
     statusprint "Installing EFI grub.."
-    chroot_exec build.$GLOBAL_BASEARCH/image "grub-install --target x86_64-efi --efi-directory=/boot/efi --modules=\"part_gpt fat\" --install-modules=\"ahci all_video ata boot cat disk echo ehci efi_gop efi_uga font gfxmenu gfxterm_background gfxterm_menu gfxterm halt hdparm help linux linuxefi ls msdospart nativedisk ohci pata jpeg probe reboot scsi uhci usb_keyboard usb videoinfo videotest part_msdos part_gpt fat ext2 normal\" $LOOPDEV_IMG"
+    chroot_exec build.$GLOBAL_BASEARCH/image "grub-install --target x86_64-efi --efi-directory=/boot/efi --modules=\"part_gpt fat\" --install-modules=\"ahci all_video ata boot minicmd extcmd ls cat disk echo ehci efi_gop efi_uga font gfxmenu gfxterm_background gfxterm_menu gfxterm halt hdparm help linux linuxefi msdospart nativedisk ohci pata jpeg probe reboot scsi uhci usb_keyboard usb videoinfo videotest part_msdos part_gpt fat ext2 normal\" $LOOPDEV_IMG"
   fi
 
   statusprint "Unmounting image rootfs filesystem and removing loop devices.."

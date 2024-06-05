@@ -4,6 +4,9 @@
 
 . ./scripts/functions
 
+statusprint "Copying scout-manage config.."
+sudo_file_template_copy ./resources/etc/scout-manage.conf ./build.$GLOBAL_BASEARCH/chroot/etc/scout-manage.conf
+
 statusprint "Adding management tool for system owner with autostart.."
 statusprint "Installing remote access packages in chroot.."
 chroot_exec build.$GLOBAL_BASEARCH/chroot 'DEBIAN_FRONTEND=noninteractive;
