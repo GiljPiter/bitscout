@@ -83,7 +83,7 @@ run_debootstrap_supervised_fast()
 
   statusprint "Fetching the list of essential packages.." &&
   pushd "./build.$GLOBAL_BASEARCH/tmp" &&
-  DEBS=$(sudo debootstrap --include=distro-info,aria2,perl,libaria2-0,libc-ares2,libssh2-1,libxml2,ca-certificates,zlib1g,localepurge,python3-apt,python3-netifaces --print-debs --arch=$GLOBAL_BASEARCH $BASERELEASE chroot http://archive.ubuntu.com/ubuntu ) || exit 1 &&
+  DEBS=$(sudo debootstrap --include=distro-info,aria2,perl,libaria2-0,libc-ares2,libssh2-1,libxml2,ca-certificates,zlib1g,localepurge,python3-apt,python3-netifaces,python-opcua-tools,python3-opcua,python3-dateutil,python3-lxml,python3-six,python3-tz,ubuntu-pro-client,ubuntu-advantage-tools --print-debs --arch=$GLOBAL_BASEARCH $BASERELEASE chroot http://archive.ubuntu.com/ubuntu ) || exit 1 &&
   popd && rm -rf "./build.$GLOBAL_BASEARCH/tmp" &&
   install_required_package aria2 &&
  
